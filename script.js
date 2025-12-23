@@ -2,14 +2,15 @@ const log = console.log;
 
 //IIFE for starting game
 const gameStart = (() => {
-    
+
+    let goesFirst = 0;
     let gameNotStarted = true;
     
     // create Gameboard
     function createGameboard() {
 
          // array to be used as tic-tac-toe game board
-        const gameboard = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
+        let gameboard = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
 
         // array is returned in an objet
         return {
@@ -19,11 +20,17 @@ const gameStart = (() => {
 
     // create players
     function createPlayer(name, mark, isWinner, token) {
-        function makeMark() {
-            let position = prompt(`${this.name } which box would you like to mark/play?`) - 1;
-            log('making mark...');
-            board.gameboard[position] = this.mark;
-            checkWinner(this.mark);
+        
+        function makeMark(position, mark) {
+
+            let square = document.getElementById(position);
+            square.textContent = mark;
+
+            board.gameboard[position - 1] = mark;
+
+            checkWinner(mark);
+            game.checkForTie();
+
         }
         return {
             name,
@@ -37,11 +44,27 @@ const gameStart = (() => {
     // create/launch game
     function gameFlow() {
         
+        let rounds = 0;
+
+        function checkForTie() {
+            game.rounds++;
+            log(game.rounds);
+            if(game.rounds === 9) { 
+                if(player1.isWinner === false && player2.isWinner === false) {
+                    log('game has ended in a tie');
+                    disp.results.textContent = 'Tie Game! Play Again?'
+                    disp.squares.forEach(element => {
+                        element.style.backgroundColor = "red";
+                    });
+                }
+            }
+        } //end function checkForTie
+
         // game start with random number to see who goes first (gets token)
         if (gameNotStarted === true) {
-            log('Game has begun! Board is clear, set for first move...');
-            const goesFirst = Math.floor(Math.random() * 2) + 1;
-            log(`Player ${goesFirst} will play first move...`);
+
+            // resets game board
+            board.gameboard = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
 
             // passes token off for first time, player with token set to true plays their mark
             if(goesFirst === 1) {
@@ -51,35 +74,100 @@ const gameStart = (() => {
                 player2.token = true;
             }
             gameNotStarted = false;
-        }
+        } 
 
-        // makeMark is called for each player (if they have the token), in alternating fashion
-        playerArray.forEach(element => {
-            if(element.token === true) {
-                element.makeMark();
-                element.token = false;
-            }
-            else {
-                element.token = true;
-            }
-        });
-
-        updateBoard();
-
-        if(player1.isWinner === false && player2.isWinner === false) {
-            gameStart.gameFlow();
-        }
-        else {
-            log('game is over');
+        return {
+            rounds,
+            checkForTie,
         }
                   
     } //end function gameFlow
+
+    function display() {
+        // h2s
+        const player_one_name = document.querySelector('.player-one-name');
+        const player_two_name = document.querySelector('.player-two-name');
+
+        // player input boxes
+        const playerOneInput = document.querySelector('.player-name-1');
+        const playerTwoInput = document.querySelector('.player-name-2');
+
+        // provides on screen updates to players (who's turn it is, who won, if game is tied)
+        const results = document.querySelector('.results');
+        results.textContent = 'Players, enter your first names and click "Submit Names" Button!';
+
+        // button to submit names and hide input boxes once names are set
+        const button = document.querySelector('.submit-names');
+        button.addEventListener('click', () => {
+            player_one_name.textContent = playerOneInput.value;
+            player_two_name.textContent = playerTwoInput.value;
+            playerOneInput.classList.toggle('hide-input');
+            playerTwoInput.classList.toggle('hide-input');
+            disp.results.textContent = 'Click Start New Game to Begin';
+        });
+
+        // individual board squares/mark up
+        const squares = document.querySelectorAll('.square');
+
+        function markBoard(e) {
+
+            const position = e.target.id;
+
+            // makeMark is called for each player (if they have the token), in alternating fashion
+            playerArray.forEach(element => {
+                if(element.token === true) {
+                    element.makeMark(position, element.mark);
+                    element.token = false;
+                }
+                else {
+                    element.token = true;
+                    if(player1.isWinner === false && player2.isWinner === false) {
+                        results.textContent = `It is ${element.name}'s turn!`;
+                    }                  
+                }
+            });
+
+            updateBoard();
+        } //end function markBoard
+
+        // start new game button section
+        const newGameBtn = document.querySelector('#start-game');
+        newGameBtn.addEventListener('click', startNewGame);
+        
+        function startNewGame() {
+            console.clear(); 
+            gameNotStarted = true;
+            player1.isWinner = false;
+            player2.isWinner = false;
+            player1.token = false;
+            player2.token = false;
+            game.rounds = 0;
+            goesFirst = Math.floor(Math.random() * 2) + 1;
+            disp.results.textContent = `Player ${goesFirst} will play first...`;
+            squares.forEach(element => {
+                element.textContent = '-';
+                element.style.backgroundColor = 'yellow';
+            });
+            squares.forEach(element => {
+                element.addEventListener('click', markBoard, {once: true})});
+            gameStart.gameFlow();
+        }
+
+        return {
+            player_one_name,
+            player_two_name,
+            results,
+            squares,
+            markBoard,
+        }
+    } //end function display
 
     // exposing factory functions to the outside, returns all functions as an object (stored in gameStart)
     return {
         createGameboard,
         createPlayer,
         gameFlow,
+        display,
     } 
 
 })(); //end IIFE
@@ -92,8 +180,12 @@ const player1 = gameStart.createPlayer('Player 1 (X)', 'X', false, false);
 const player2 = gameStart.createPlayer('Player 2 (O)', 'O', false, false);
 const playerArray = [player1, player2];
 
+// create display object
+const disp = gameStart.display();
+
 // creates game flow object - launch game
 const game = gameStart.gameFlow();
+
 // --------------------------------------------------------------------------------
 
 function updateBoard() {
@@ -143,6 +235,9 @@ function checkWinner(mark) {
     const isWinningTrio = (winningArray, triosArray) => {
         for(const array of triosArray) {
             if(array.every(element => winningArray.includes(element))) {
+                array.forEach(element => {
+                    disp.squares[element - 1].style.backgroundColor = 'green';
+                });
                 return true;
             }
         }
@@ -150,18 +245,18 @@ function checkWinner(mark) {
 
     // // call function isWinningTrio and declare winner
     if(isWinningTrio(winningArray, triosArray)) {
-        log(`Player ${mark} wins!`);
         if(mark === 'X') {
             player1.isWinner = true;
-            log('Player 1 wins!');
+            disp.results.textContent = 'Player 1 (X) Wins!';
         }
         else if(mark === 'O'){
             player2.isWinner = true;
-            log('Player 2 wins!');
+            disp.results.textContent = 'Player 2 (O) Wins!';
         }
+        
     }
     else {
         log('not a winning set, keep playing...');
     }
 
-} //end function checkWinner()
+} //end function checkWinner

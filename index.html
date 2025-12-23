@@ -8,18 +8,32 @@
 </head>
 <body>
 
-    <h1 class="title">Tic-Tac-Toe</h1>
+    <div class="outer-flex">
+        <h1 class="title">Tic-Tac-Toe</h1>
 
-    <div class="container">
-        <div id="square_1" class="square">X</div>
-        <div id="square_2" class="square">O</div>
-        <div id="square_3" class="square">X</div>
-        <div id="square_4" class="square">O</div>
-        <div id="square_5" class="square">X</div>
-        <div id="square_6" class="square">X</div>
-        <div id="square_7" class="square">O</div>
-        <div id="square_8" class="square">X</div>
-        <div id="square_9" class="square">O</div>
+        <div class="flex-container"> 
+            <input class="player-name-1" type="text" placeholder="Player 1 (enter name)">
+            <h2 class="player-one-name">Player 1</h2>
+            <button class="btn submit-names">Submit Names</button>
+            <h2 class="player-two-name">Player 2</h2>
+            <input class="player-name-2" type="text" placeholder="Player 2 (enter name)">
+        </div>
+
+        <div class="container">
+            <div id="1" class="square">-</div>
+            <div id="2" class="square">-</div>
+            <div id="3" class="square">-</div>
+            <div id="4" class="square">-</div>
+            <div id="5" class="square">-</div>
+            <div id="6" class="square">-</div>
+            <div id="7" class="square">-</div>
+            <div id="8" class="square">-</div>
+            <div id="9" class="square">-</div>
+        </div>
+
+        <p class="results">Results</p>
+
+        <button class="btn" id="start-game">Start New Game</button>
     </div>
     
     <script src="script.js"></script>
