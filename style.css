@@ -1,100 +1,105 @@
 :root {
-    --yellow: rgb(233, 233, 160);
-    --blue: #2a7fe7;
-    --text-white: #fff;
+  --yellow: rgb(233, 233, 160);
+  --blue: #2a7fe7;
+  --text-white: #fff;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    margin-top: 1rem;
-    padding: 0; 
-    font-size: 1.4rem;
+  box-sizing: border-box;
+  margin: 0;
+  margin-top: 1rem;
+  padding: 0;
+  font-size: 1.4rem;
 }
 
 h1 {
-    font-size: 2rem;
-    background-color: var(--yellow);
-    padding: 1rem;
-    margin: 1rem;
-    text-align: center;
-    box-shadow: 10px 5px 5px black;
+  font-size: 2rem;
+  background-color: var(--yellow);
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+  box-shadow: 10px 5px 5px black;
 }
 
 h2 {
-    font-size: 1.4rem;
+  font-size: 1.4rem;
 }
 
 input {
-    background-color: var(--yellow);
-    padding: 1rem;
-    border-radius: 1rem;
-    border: none;
+  background-color: var(--yellow);
+  padding: 1rem;
+  border-radius: 1rem;
+  border: none;
 }
 
 input:focus {
-    background-color: lightgreen;
+  background-color: lightgreen;
 }
 
-
 .hide-input {
-    display: none;
+  display: none;
 }
 
 body {
-    position: relative;
-    background-color: rgb(85, 113, 113);
+  position: relative;
+  background-color: rgb(85, 113, 113);
 }
 
 .outer-flex {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .flex-container {
-    display: flex;
-    gap: 2rem;
-    /* justify-content: space-between; */
+  display: flex;
+  gap: 2rem;
+  /* justify-content: space-between; */
 }
 
 .container {
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    margin: auto;
-    align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  margin: auto;
+  align-items: center;
 }
 
 .square {
-    width: 100px;
-    height: 100px;
-    background-color: yellow;
-    border: 2px solid black;
-    text-align: center;
-    vertical-align: center;
-    font-size: 2rem;
-    vertical-align: center;
+  width: 100px;
+  height: 100px;
+  background-color: yellow;
+  border: 2px solid black;
+  text-align: center;
+  vertical-align: center;
+  font-size: 2rem;
+  vertical-align: center;
 }
 
 .square:hover {
-    cursor: pointer;
-    background-color: grey;
-    transform: scale(1.1);
+  cursor: pointer;
+  background-color: grey;
+  transform: scale(1.1);
 }
 
 .results {
-    text-align: center;
+  text-align: center;
 }
 
 #start-game {
-    width: 35%;
-    text-align: center;
+  width: 35%;
+  text-align: center;
 }
 
 .btn {
-    border-radius: 15px;
-    padding: 1rem;
-    background-color: var(--blue);
+  border-radius: 15px;
+  padding: 1rem;
+  background-color: var(--blue);
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover {
+  background-color: aliceblue;
 }
